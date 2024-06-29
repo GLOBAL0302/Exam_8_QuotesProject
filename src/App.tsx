@@ -1,13 +1,12 @@
-
-import './App.css'
+import './App.css';
 import HomePage from './containers/HomePage/HomePage';
 
 const App = () => {
   return (
     <>
-      <HomePage/>
+      <HomePage />
     </>
-  )
+  );
 };
 
-export default App
+export default App;
