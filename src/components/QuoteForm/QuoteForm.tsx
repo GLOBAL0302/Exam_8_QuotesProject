@@ -1,7 +1,7 @@
-import React, {ChangeEvent, useCallback, useEffect, useState} from 'react';
+import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { IUserInput } from '../../types';
 import axiosApi from '../../axiosApi';
-import {useNavigate, useParams} from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const initialFormState: IUserInput = {
   category: '',
@@ -11,18 +11,19 @@ const initialFormState: IUserInput = {
 
 const QuoteForm = () => {
   const [userInput, setUserInput] = useState<IUserInput>(initialFormState);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const {id} = useParams();
+  const { id } = useParams();
 
-  const fetchQuoteData = useCallback(async ()=>{
-    if(id){
+  const fetchQuoteData = useCallback(async () => {
+    if (id) {
       const response = await axiosApi.get(`/quotes/${id}.json`);
       setUserInput(response.data);
     }
-  },[id]);
+  }, [id]);
 
   useEffect(() => {
-   void fetchQuoteData();
+    void fetchQuoteData();
   }, [fetchQuoteData]);
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -43,15 +44,17 @@ const QuoteForm = () => {
 
   const onFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setIsLoading(true);
     try {
-      if (id){
+      if (id) {
         axiosApi.put(`/quotes/${id}.json`, userInput);
-      }else{
+      } else {
         axiosApi.post('/quotes.json', userInput);
       }
-    }catch (e){
+    } catch (e) {
       throw new Error(e);
-    }finally {
+    } finally {
+      setIsLoading(false);
       navigate('/');
     }
   };
@@ -101,9 +104,15 @@ const QuoteForm = () => {
             aria-describedby="inputGroup-sizing-lg"
           />
         </div>
-        <button type="submit" className="btn btn-primary">
-          {id?"Save change":"Submit"}
-        </button>
+        {isLoading ? (
+          <div className="spinner-border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        ) : (
+          <button type="submit" className="btn btn-primary">
+            {id ? 'Save change' : 'Submit'}
+          </button>
+        )}
       </form>
     </div>
   );

@@ -15,7 +15,7 @@ const Category = () => {
         {categories.map((category) => (
           <li key={category}>
             <NavLink
-              to={category === "All"?"/":`/quotes/${category}`}
+              to={category === 'All' ? '/' : `/quotes/${category}`}
               href="#"
               className="list-group-item list-group-item-action "
               aria-current="true"
