@@ -1,11 +1,13 @@
 import {useCallback, useEffect, useState} from 'react';
-import {IApiQuotes, IQuote} from '../../types';
+import {IApiQuotes, ICategories, IQuote, IUserInput} from '../../types';
 import axiosApi from '../../axiosApi';
 import Quotes from '../../components/Quotes/Quotes';
+import Category from '../../components/Category/Category';
+
+
 
 const HomePage = () => {
   const [allQuotes, setAllQuotes] = useState<IQuote[]>([
-
   ]);
 
   const fetchQuoteData = useCallback(async ()=>{
@@ -26,10 +28,10 @@ const HomePage = () => {
   }, [fetchQuoteData]);
 
   return (
-    <>
+    <div className="d-flex gap-5">
+      <Category/>
       <Quotes quotes = {allQuotes}/>
-
-    </>
+    </div>
   );
 };
 

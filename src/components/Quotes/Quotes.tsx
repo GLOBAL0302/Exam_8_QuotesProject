@@ -7,13 +7,13 @@ interface Props{
 }
 const Quotes:React.FC<Props> = ({quotes}) => {
   return (
-    <>
+    <div className="col-8">
       {quotes.map((quote)=>(
         <Quote
           key={quote.id}
           quote={quote}/>
       ))}
-    </>
+    </div>
   );
 };
 

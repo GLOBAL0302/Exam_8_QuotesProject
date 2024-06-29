@@ -4,9 +4,9 @@ const NavBar = () => {
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary mb-5">
       <div className="container-fluid">
-        <a className="navbar-brand" href="#">
+        <NavLink to="/" className="navbar-brand" href="#">
           Home
-        </a>
+        </NavLink>
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav d-flex ms-auto gap-3">
             <li className="nav-item">

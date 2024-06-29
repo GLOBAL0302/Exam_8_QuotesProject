@@ -11,3 +11,7 @@ export interface IApiQuotes{
 export interface IQuote extends IUserInput{
   id:string
 }
+
+export interface ICategories{
+  [categories:string]:string
+}
