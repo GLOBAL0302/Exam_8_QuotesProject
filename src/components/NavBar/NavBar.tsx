@@ -1,4 +1,4 @@
-import {NavLink} from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 const NavBar = () => {
   return (
@@ -19,7 +19,11 @@ const NavBar = () => {
               className="border border-2 bg-light"
             ></span>
             <li className="nav-item">
-              <NavLink to="/quoteForm" className="nav-link " aria-current="page">
+              <NavLink
+                to="/quoteForm"
+                className="nav-link "
+                aria-current="page"
+              >
                 Submit new Quotes
               </NavLink>
             </li>

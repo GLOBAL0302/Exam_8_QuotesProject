@@ -1,40 +1,60 @@
-import React, {ChangeEvent, useState} from 'react';
-import {IUserInput} from '../../types';
+import React, {ChangeEvent, useCallback, useEffect, useState} from 'react';
+import { IUserInput } from '../../types';
 import axiosApi from '../../axiosApi';
-import {useNavigate} from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 
-const initialFormState:IUserInput = {
-  category:"",
-  author:"",
-  userQuote:""
+const initialFormState: IUserInput = {
+  category: '',
+  author: '',
+  userQuote: '',
 };
 
 const QuoteForm = () => {
   const [userInput, setUserInput] = useState<IUserInput>(initialFormState);
   const navigate = useNavigate();
+  const {id} = useParams();
 
-  const onChange =(event:React.ChangeEvent<HTMLInputElement>)=>{
-    const {name, value} = event.target;
-    setUserInput((prevState)=>({
+  const fetchQuoteData = useCallback(async ()=>{
+    if(id){
+      const response = await axiosApi.get(`/quotes/${id}.json`);
+      setUserInput(response.data);
+    }
+  },[id]);
+
+  useEffect(() => {
+   void fetchQuoteData();
+  }, [fetchQuoteData]);
+
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setUserInput((prevState) => ({
       ...prevState,
-      [name]: value
+      [name]: value,
     }));
   };
 
-  const onClickSelect = (event:ChangeEvent)=>{
-    const {value} = event.target;
-    setUserInput((prevState)=>({
+  const onClickSelect = (event: ChangeEvent) => {
+    const { value } = event.target;
+    setUserInput((prevState) => ({
       ...prevState,
-      category: value
+      category: value,
     }));
   };
 
-  const onFormSubmit = (event:React.FormEvent<HTMLFormElement>)=>{
+  const onFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    axiosApi.post("/quotes.json", userInput);
-    navigate("/");
+    try {
+      if (id){
+        axiosApi.put(`/quotes/${id}.json`, userInput);
+      }else{
+        axiosApi.post('/quotes.json', userInput);
+      }
+    }catch (e){
+      throw new Error(e);
+    }finally {
+      navigate('/');
+    }
   };
-
   return (
     <div className="p-5 bg-light">
       <form onSubmit={onFormSubmit}>
@@ -56,6 +76,7 @@ const QuoteForm = () => {
             <strong>Author:</strong>
           </span>
           <input
+            value={userInput.author}
             required
             onChange={onChange}
             name="author"
@@ -70,6 +91,7 @@ const QuoteForm = () => {
             <strong>Quote:</strong>
           </span>
           <input
+            value={userInput.userQuote}
             required
             onChange={onChange}
             name="userQuote"
@@ -79,7 +101,9 @@ const QuoteForm = () => {
             aria-describedby="inputGroup-sizing-lg"
           />
         </div>
-        <button type="submit" className="btn btn-primary">Submit</button>
+        <button type="submit" className="btn btn-primary">
+          {id?"Save change":"Submit"}
+        </button>
       </form>
     </div>
   );

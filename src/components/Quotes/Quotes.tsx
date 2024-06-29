@@ -1,33 +1,38 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {IApiQuotes, IQuote} from '../../types';
+import React, { useCallback, useEffect, useState } from 'react';
+import { IApiQuotes, IQuote } from '../../types';
 import Quote from './Quote/Quote';
 import axiosApi from '../../axiosApi';
-import {useParams} from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+import category from '../Category/Category';
 
-const Quotes= () => {
-  const [allQuotes, setAllQuotes] = useState<IQuote[]>([
-  ]);
+const Quotes = () => {
+  const [allQuotes, setAllQuotes] = useState<IQuote[]>([]);
 
-  const {category} = useParams();
+  const { category } = useParams();
 
-  const fetchQuoteData = useCallback(async ()=>{
+  const fetchQuoteData = useCallback(async () => {
     let response;
     let quotes;
 
     try {
-      if (category !== "All"){
-        response =await axiosApi.get<IApiQuotes | null>(`/quotes.json?orderBy="category"&equalTo="${category}"`);
-      }else {
-        response =await axiosApi.get<IApiQuotes | null>("/quotes.json");
+      if (category) {
+        response = await axiosApi.get<IApiQuotes | null>(
+          `/quotes.json?orderBy="category"&equalTo="${category}"`,
+        );
       }
+      else if (category === undefined){
+          response = await axiosApi.get<IApiQuotes | null>('/quotes.json');
+      }
+      else{
+        response = await axiosApi.get<IApiQuotes | null>('/quotes.json');
 
-    }catch (e){
+      }
+    } catch (e) {
       throw new Error(e);
-    }
-    finally {
+    } finally {
       const quotesResponse = response.data;
-      if(quotesResponse){
-        quotes = Object.keys(response.data).map((id:string)=>({
+      if (quotesResponse) {
+        quotes = Object.keys(response.data).map((id: string) => ({
           ...response.data[id],
           id,
         }));
@@ -35,20 +40,16 @@ const Quotes= () => {
       setAllQuotes(quotes);
     }
 
-  },[category]);
+  }, [category]);
 
   useEffect(() => {
-    void  fetchQuoteData();
+    void fetchQuoteData();
   }, [fetchQuoteData]);
-
-
 
   return (
     <div className="col-8">
-      {allQuotes.map((quote)=>(
-        <Quote
-          key={quote.id}
-          quote={quote}/>
+      {allQuotes.map((quote) => (
+        <Quote key={quote.id} quote={quote} />
       ))}
     </div>
   );
