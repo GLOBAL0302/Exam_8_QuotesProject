@@ -39,10 +39,12 @@ const QuoteForm = () => {
     <div className="p-5 bg-light">
       <form onSubmit={onFormSubmit}>
         <select
+          required
           onChange={onClickSelect}
           className="form-select form-select-lg mb-3 fs-3"
           aria-label="Large select example"
         >
+          <option>Please choose category</option>
           <option>Star_Wars</option>
           <option>Famous_People</option>
           <option>Saying</option>

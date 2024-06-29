@@ -4,9 +4,6 @@ import Quote from './Quote/Quote';
 import axiosApi from '../../axiosApi';
 import {useParams} from 'react-router-dom';
 
-// interface Props{
-//   link:string
-// }
 const Quotes= () => {
   const [allQuotes, setAllQuotes] = useState<IQuote[]>([
   ]);
@@ -14,21 +11,30 @@ const Quotes= () => {
   const {category} = useParams();
 
   const fetchQuoteData = useCallback(async ()=>{
-    if (category){
-      const response =await axiosApi.get<IApiQuotes | null>(`/quotes.json?orderBy="category"&equalTo="Famous_People"`);
-      console.log(response);
+    let response;
+    let quotes;
+
+    try {
+      if (category !== "All"){
+        response =await axiosApi.get<IApiQuotes | null>(`/quotes.json?orderBy="category"&equalTo="${category}"`);
+      }else {
+        response =await axiosApi.get<IApiQuotes | null>("/quotes.json");
+      }
+
+    }catch (e){
+      throw new Error(e);
     }
-
-    const response =await axiosApi.get<IApiQuotes | null>("/quotes.json");
-    const quotesResponse = response.data;
-    if(quotesResponse){
-      const quotes = Object.keys(response.data).map((id:string)=>({
-        ...response.data[id],
-        id,
-      }));
-
+    finally {
+      const quotesResponse = response.data;
+      if(quotesResponse){
+        quotes = Object.keys(response.data).map((id:string)=>({
+          ...response.data[id],
+          id,
+        }));
+      }
       setAllQuotes(quotes);
     }
+
   },[category]);
 
   useEffect(() => {
