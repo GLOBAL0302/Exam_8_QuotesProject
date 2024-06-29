@@ -1,11 +1,11 @@
-import NavBar from '../../components/NavBar/NavBar';
-import QuoteFormPage from '../QuoteFormPage/QuoteFormPage';
+import {useState} from 'react';
+import {IQuote} from '../../types';
 
 const HomePage = () => {
+  const [allPosts, setAllPosts] = useState<IQuote[]>([]);
   return (
     <>
-      <NavBar />
-      <QuoteFormPage />
+
     </>
   );
 };

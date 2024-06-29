@@ -1,5 +1,7 @@
 import React, {ChangeEvent, useState} from 'react';
 import {IUserInput} from '../../types';
+import axiosApi from '../../axiosApi';
+import {useNavigate} from 'react-router-dom';
 
 const initialFormState:IUserInput = {
   category:"",
@@ -9,6 +11,7 @@ const initialFormState:IUserInput = {
 
 const QuoteForm = () => {
   const [userInput, setUserInput] = useState<IUserInput>(initialFormState);
+  const navigate = useNavigate();
 
   const onChange =(event:React.ChangeEvent<HTMLInputElement>)=>{
     const {name, value} = event.target;
@@ -28,7 +31,8 @@ const QuoteForm = () => {
 
   const onFormSubmit = (event:React.FormEvent<HTMLFormElement>)=>{
     event.preventDefault();
-    console.log(userInput);
+    axiosApi.post("/quotes.json", userInput);
+    navigate("/");
   };
 
   return (
@@ -39,8 +43,8 @@ const QuoteForm = () => {
           className="form-select form-select-lg mb-3 fs-3"
           aria-label="Large select example"
         >
-          <option>Star Wars</option>
-          <option>Famous People</option>
+          <option>Star_Wars</option>
+          <option>Famous_People</option>
           <option>Saying</option>
           <option>Humor</option>
           <option>Motivational</option>

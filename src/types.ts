@@ -3,3 +3,11 @@ export interface IUserInput{
   author:string,
   userQuote:string
 }
+
+export interface IApiQuotes{
+  [id:string]:string
+}
+
+export interface IQuote extends IUserInput{
+  id:string
+}

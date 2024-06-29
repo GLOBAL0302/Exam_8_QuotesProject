@@ -1,3 +1,5 @@
+import {NavLink} from 'react-router-dom';
+
 const NavBar = () => {
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary mb-5">
@@ -8,18 +10,18 @@ const NavBar = () => {
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav d-flex ms-auto gap-3">
             <li className="nav-item">
-              <a className="nav-link" aria-current="page" href="#">
+              <NavLink to="/" className="nav-link" aria-current="page">
                 Quotes
-              </a>
+              </NavLink>
             </li>
             <span
               style={{ height: '40px', width: '3px' }}
               className="border border-2 bg-light"
             ></span>
             <li className="nav-item">
-              <a className="nav-link " aria-current="page" href="#">
+              <NavLink to="/quoteForm" className="nav-link " aria-current="page">
                 Submit new Quotes
-              </a>
+              </NavLink>
             </li>
           </ul>
         </div>
