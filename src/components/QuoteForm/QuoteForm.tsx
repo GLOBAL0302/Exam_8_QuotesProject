@@ -54,6 +54,7 @@ const QuoteForm = () => {
             <strong>Author:</strong>
           </span>
           <input
+            required
             onChange={onChange}
             name="author"
             type="text"
@@ -67,6 +68,7 @@ const QuoteForm = () => {
             <strong>Quote:</strong>
           </span>
           <input
+            required
             onChange={onChange}
             name="userQuote"
             type="text"
